@@ -1,0 +1,45 @@
+name: Build Windows Installer
+
+on:
+  push:
+    branches: [claude/practical-bell-b5v1tu]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: crossplatform
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Windows installer
+        run: npm run dist:win
+
+      - name: Upload installer as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PalmierPro-Windows-Installer
+          path: crossplatform/release/*.exe
+          if-no-files-found: error
+
+      - name: Publish installer to Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: windows-build
+          name: PalmierPro for Windows
+          body: |
+            Automated Windows installer build of PalmierPro.
+            Download the .exe below, run it, and follow the installer.
+          files: crossplatform/release/*.exe

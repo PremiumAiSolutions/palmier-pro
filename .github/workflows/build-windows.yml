@@ -27,19 +27,28 @@ jobs:
       - name: Build Windows installer
         run: npm run dist:win
 
-      - name: Upload installer as artifact
+      - name: Upload build as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: PalmierPro-Windows-Installer
-          path: crossplatform/release/*.exe
+          name: PalmierPro-Windows
+          path: |
+            crossplatform/release/*.exe
+            crossplatform/release/*.zip
           if-no-files-found: error
 
-      - name: Publish installer to Releases
+      - name: Publish to Releases
         uses: softprops/action-gh-release@v2
         with:
           tag_name: windows-build
           name: PalmierPro for Windows
           body: |
-            Automated Windows installer build of PalmierPro.
-            Download the .exe below, run it, and follow the installer.
-          files: crossplatform/release/*.exe
+            PalmierPro for Windows.
+
+            EASIEST (avoids the browser virus warning):
+            download the .zip, right-click -> Extract All, then run PalmierPro.exe inside.
+
+            Or use the .exe installer. Both are unsigned, so Windows may warn on first run -
+            click "More info -> Run anyway".
+          files: |
+            crossplatform/release/*.exe
+            crossplatform/release/*.zip

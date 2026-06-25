@@ -37,8 +37,8 @@
     "directories": { "output": "release" },
     "files": ["dist/**/*", "dist-electron/**/*"],
     "win": {
-      "target": ["nsis"],
-      "artifactName": "PalmierPro-Setup-${version}.${ext}",
+      "target": ["nsis", "zip"],
+      "artifactName": "PalmierPro-${version}.${ext}",
       "signAndEditExecutable": false
     },
     "nsis": {
